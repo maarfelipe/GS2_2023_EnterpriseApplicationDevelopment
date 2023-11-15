@@ -1,7 +1,15 @@
+using DermaHelp.Persistence;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<OracleDbContext>(options =>
+{
+    options.UseOracle(builder.Configuration.GetConnectionString("oracle"));
+});
 
 var app = builder.Build();
 
