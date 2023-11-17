@@ -3,29 +3,31 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DermaHelp.Entities
 {
-    [Table("Imagens")]
-    public class Imagem
+    [Table("Consultas")]
+    public class Consulta
     {
         [Key]
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        [Column("data_hora")]
+        [Column("data_consulta")]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DataHora { get; set; }
-
-        [Column("image_data")]
-        [MaxLength]
-        public required byte[] ImageData { get; set; }
-
-        [Column("resultado_imagem")]
-        [MaxLength(500)]
-        public required string Resultado { get; set; }
 
         [ForeignKey("Usuario")]
         [Column("id_usuario")]
         public int UsuarioId { get; set; }
         public virtual required Usuario Usuario { get; set; }
+
+        [ForeignKey("Medico")]
+        [Column("id_medico")]
+        public long MedicoId { get; set; }
+        public virtual required Medico Medico { get; set; }
+
+        [ForeignKey("Consultorio")]
+        [Column("id_consultorio")]
+        public long ConsultorioId { get; set; }
+        public virtual required Consultorio Consultorio { get; set; }
     }
 }
