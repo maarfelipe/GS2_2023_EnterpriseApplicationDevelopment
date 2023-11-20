@@ -18,7 +18,6 @@ namespace DermaHelp.Entities
 
         [Column("numero")]
         [Required(ErrorMessage = "Numero é obrigatório.")]
-        [MaxLength(5)]
         public int Numero { get; set; }
 
         [Column("complemento")]
@@ -37,7 +36,6 @@ namespace DermaHelp.Entities
 
         [Column("cep")]
         [Required(ErrorMessage = "CEP é obrigatório.")]
-        [MaxLength(8)]
         public required string Cep { get; set; }
 
         // One-to-One relationship with Consultorio

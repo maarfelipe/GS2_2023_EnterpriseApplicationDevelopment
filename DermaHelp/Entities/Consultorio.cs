@@ -18,18 +18,21 @@ namespace DermaHelp.Entities
 
         [Column("cnpj_consultorio")]
         [Required(ErrorMessage = "CNPJ é obrigatório.")]
-        [MaxLength(14)]
         public required string Cnpj { get; set; }
 
-        public virtual ICollection<Consulta> Consultas { get; set; } = new List<Consulta>();
+        //public virtual ICollection<Consulta> Consultas { get; set; } = new List<Consulta>();
+
+        // One-to-Many relationship with Medico
+        //public virtual ICollection<Medico> Medicos { get; set; } = new List<Medico>();
 
         // One-to-One relationship with Endereco
         [ForeignKey("Endereco")]
         [Column("id_endereco")]
-        public long EnderecoId { get; set; }
-        public virtual required Endereco Endereco { get; set; }
+        [Required(ErrorMessage = "Endereço é obrigatório.")]
+        public long? EnderecoId { get; set; }
+        public virtual Endereco? Endereco { get; set; }
 
         // Many-to-Many relationship with Medico
-        public virtual ICollection<MedicoConsultorio> MedicoConsultorio { get; set; } = new List<MedicoConsultorio>();
+        //public virtual ICollection<MedicoConsultorio> MedicoConsultorio { get; set; } = new List<MedicoConsultorio>();
     }
 }

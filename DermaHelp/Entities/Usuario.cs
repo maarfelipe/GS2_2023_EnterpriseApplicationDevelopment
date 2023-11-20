@@ -32,8 +32,8 @@ namespace DermaHelp.Entities
         [MaxLength(60)]
         public required string Senha { get; set; }
 
-        public virtual ICollection<Imagem> Imagens { get; set; } = new List<Imagem>();
+        //public virtual ICollection<Imagem> Imagens { get; set; } = new List<Imagem>();
 
-        public virtual ICollection<Consulta> Consultas { get; set; } = new List<Consulta>();
+        //public virtual ICollection<Consulta> Consultas { get; set; } = new List<Consulta>();
     }
 }
