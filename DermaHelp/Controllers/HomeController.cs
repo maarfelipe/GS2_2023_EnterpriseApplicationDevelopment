@@ -1,4 +1,4 @@
-﻿using DermaHelp.Entities;
+﻿using DermaHelp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

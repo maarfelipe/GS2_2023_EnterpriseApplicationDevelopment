@@ -1,4 +1,4 @@
-namespace DermaHelp.Entities
+namespace DermaHelp.Models
 {
     public class ErrorViewModel
     {

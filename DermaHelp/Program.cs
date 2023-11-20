@@ -1,4 +1,4 @@
-using DermaHelp.Persistence;
+using DermaHelp.Persistense;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,9 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<OracleDbContext>(options =>
+builder.Services.AddDbContext<PostgreDbContext>(options =>
 {
-    options.UseOracle(builder.Configuration.GetConnectionString("OracleConnection"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreDB"));
 });
 
 var app = builder.Build();

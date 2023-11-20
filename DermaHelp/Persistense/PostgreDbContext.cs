@@ -1,9 +1,9 @@
 ﻿using DermaHelp.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DermaHelp.Persistence
+namespace DermaHelp.Persistense
 {
-    public class OracleDbContext : DbContext
+    public class PostgreDbContext : DbContext
     {
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Imagem> Imagem { get; set; }
@@ -13,7 +13,8 @@ namespace DermaHelp.Persistence
         public DbSet<Medico> Medico { get; set; }
         public DbSet<MedicoConsultorio> MedicoConsultorio { get; set; }
 
-        public OracleDbContext(DbContextOptions<OracleDbContext> options) : base(options) { }
+
+        public PostgreDbContext(DbContextOptions<PostgreDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -88,5 +89,6 @@ namespace DermaHelp.Persistence
 
             base.OnModelCreating(modelBuilder);
         }
+
     }
 }

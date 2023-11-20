@@ -1,12 +1,13 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace DermaHelp.Migrations
 {
     /// <inheritdoc />
-    public partial class creating_entities : Migration
+    public partial class CreatingEntities : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,11 +16,11 @@ namespace DermaHelp.Migrations
                 name: "Consultorios",
                 columns: table => new
                 {
-                    id = table.Column<long>(type: "NUMBER(19)", nullable: false)
-                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    nome_consultorio = table.Column<string>(type: "NVARCHAR2(100)", maxLength: 100, nullable: false),
-                    cnpj_consultorio = table.Column<string>(type: "NVARCHAR2(14)", maxLength: 14, nullable: false),
-                    id_endereco = table.Column<long>(type: "NUMBER(19)", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    nome_consultorio = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    cnpj_consultorio = table.Column<string>(type: "character varying(14)", maxLength: 14, nullable: false),
+                    id_endereco = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,11 +31,11 @@ namespace DermaHelp.Migrations
                 name: "Medicos",
                 columns: table => new
                 {
-                    id = table.Column<long>(type: "NUMBER(19)", nullable: false)
-                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    nome_medico = table.Column<string>(type: "NVARCHAR2(100)", maxLength: 100, nullable: false),
-                    crm_medico = table.Column<string>(type: "NVARCHAR2(13)", maxLength: 13, nullable: false),
-                    email_medico = table.Column<string>(type: "NVARCHAR2(256)", maxLength: 256, nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    nome_medico = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    crm_medico = table.Column<string>(type: "character varying(13)", maxLength: 13, nullable: false),
+                    email_medico = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,12 +46,12 @@ namespace DermaHelp.Migrations
                 name: "Usuarios",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "NUMBER(10)", nullable: false)
-                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    nome_usuario = table.Column<string>(type: "NVARCHAR2(100)", maxLength: 100, nullable: false),
-                    cpf_usuario = table.Column<string>(type: "NVARCHAR2(11)", maxLength: 11, nullable: false),
-                    email_usuario = table.Column<string>(type: "NVARCHAR2(256)", maxLength: 256, nullable: false),
-                    senha_usuario = table.Column<string>(type: "NVARCHAR2(60)", maxLength: 60, nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    nome_usuario = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    cpf_usuario = table.Column<string>(type: "character varying(11)", maxLength: 11, nullable: false),
+                    email_usuario = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    senha_usuario = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -61,15 +62,15 @@ namespace DermaHelp.Migrations
                 name: "Enderecos",
                 columns: table => new
                 {
-                    id = table.Column<long>(type: "NUMBER(19)", nullable: false)
-                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    logradouro = table.Column<string>(type: "NVARCHAR2(100)", maxLength: 100, nullable: false),
-                    numero = table.Column<int>(type: "NUMBER(10)", maxLength: 5, nullable: false),
-                    complemento = table.Column<string>(type: "NVARCHAR2(40)", maxLength: 40, nullable: true),
-                    cidade = table.Column<string>(type: "NVARCHAR2(40)", maxLength: 40, nullable: false),
-                    estado = table.Column<string>(type: "NVARCHAR2(40)", maxLength: 40, nullable: false),
-                    cep = table.Column<string>(type: "NVARCHAR2(8)", maxLength: 8, nullable: false),
-                    id_consultorio = table.Column<long>(type: "NUMBER(19)", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    logradouro = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    numero = table.Column<int>(type: "integer", maxLength: 5, nullable: false),
+                    complemento = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
+                    cidade = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
+                    estado = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
+                    cep = table.Column<string>(type: "character varying(8)", maxLength: 8, nullable: false),
+                    id_consultorio = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,8 +87,8 @@ namespace DermaHelp.Migrations
                 name: "MedicosConsultorios",
                 columns: table => new
                 {
-                    id_medico = table.Column<long>(type: "NUMBER(19)", nullable: false),
-                    id_consultorio = table.Column<long>(type: "NUMBER(19)", nullable: false)
+                    id_medico = table.Column<long>(type: "bigint", nullable: false),
+                    id_consultorio = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -108,12 +109,12 @@ namespace DermaHelp.Migrations
                 name: "Consultas",
                 columns: table => new
                 {
-                    id = table.Column<long>(type: "NUMBER(19)", nullable: false)
-                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    data_consulta = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: false),
-                    id_usuario = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    id_medico = table.Column<long>(type: "NUMBER(19)", nullable: false),
-                    id_consultorio = table.Column<long>(type: "NUMBER(19)", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    data_consulta = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    id_usuario = table.Column<int>(type: "integer", nullable: false),
+                    id_medico = table.Column<long>(type: "bigint", nullable: false),
+                    id_consultorio = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -142,12 +143,12 @@ namespace DermaHelp.Migrations
                 name: "Imagens",
                 columns: table => new
                 {
-                    id = table.Column<long>(type: "NUMBER(19)", nullable: false)
-                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    data_hora = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: false),
-                    image_data = table.Column<byte[]>(type: "RAW(2000)", nullable: false),
-                    resultado_imagem = table.Column<string>(type: "NVARCHAR2(500)", maxLength: 500, nullable: false),
-                    id_usuario = table.Column<int>(type: "NUMBER(10)", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    data_hora = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    image_data = table.Column<byte[]>(type: "bytea", nullable: false),
+                    resultado_imagem = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    id_usuario = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
