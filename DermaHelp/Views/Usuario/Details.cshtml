@@ -10,29 +10,40 @@
     <h4>Usuario</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Nome)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Nome)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Cpf)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Cpf)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Email)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Email)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Senha)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Senha)
+        <dd class="col-sm-10">
+            <div class="input-group">
+                <input id="passwordInput" class="form-control" type="password" value="@Html.DisplayFor(model => model.Senha)" readonly />
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()">Show</button>
+                </div>
+            </div>
         </dd>
     </dl>
 </div>
@@ -40,3 +51,16 @@
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+@section Scripts {
+    <script>
+        function togglePassword() {
+            var passwordInput = document.getElementById('passwordInput');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        }
+    </script>
+}

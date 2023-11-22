@@ -30,7 +30,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Senha" class="control-label"></label>
-                <input asp-for="Senha" class="form-control" />
+                <div class="input-group">
+                    <input id="passwordInput" asp-for="Senha" class="form-control" />
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()">Show</button>
+                    </div>
+                </div>
                 <span asp-validation-for="Senha" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -45,5 +50,21 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function togglePassword() {
+            var passwordInput = document.getElementById('passwordInput');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        }
+
+        // Ensure that the password starts as hidden
+        togglePassword();
+    </script>
 }
