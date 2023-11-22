@@ -25,7 +25,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="EnderecoId" class="control-label"></label>
-                <select asp-for="EnderecoId" class="form-control" asp-items="ViewBag.EnderecoId"></select>
+                <select asp-for="EnderecoId" class="form-control" id="enderecoId">
+                    <!-- Display the current Endereco associated with the Consultorio -->
+                    <option value="@Model.EnderecoId">@Model.Endereco.Id (atual)</option>
+
+                    <!-- Display available Enderecos -->
+                    @foreach (var endereco in ViewBag.AvailableEnderecos)
+                    {
+                        <option value="@endereco.Value">@endereco.Text</option>
+                    }
+                </select>
                 <span asp-validation-for="EnderecoId" class="text-danger"></span>
             </div>
             <div class="form-group">

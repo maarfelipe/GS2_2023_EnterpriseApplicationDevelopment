@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DermaHelp.Entities;
+using DermaHelp.Persistense;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DermaHelp.Entities;
-using DermaHelp.Persistense;
 
 namespace DermaHelp.Controllers
 {
@@ -51,7 +47,7 @@ namespace DermaHelp.Controllers
             // Get the list of available Enderecos (those not associated with any Consultorio)
             var availableEnderecos = _context.Endereco
                 .Where(e => !_context.Consultorio.Any(c => c.EnderecoId == e.Id))
-                .Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Cep })
+                .Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Id.ToString() })
                 .ToList();
 
             // Pass the list to the view
@@ -73,7 +69,7 @@ namespace DermaHelp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EnderecoId"] = new SelectList(_context.Endereco, "Id", "Cep", consultorio.EnderecoId);
+            ViewData["EnderecoId"] = new SelectList(_context.Endereco, "Id", "Id", consultorio.EnderecoId);
             return View(consultorio);
         }
 
@@ -85,12 +81,22 @@ namespace DermaHelp.Controllers
                 return NotFound();
             }
 
-            var consultorio = await _context.Consultorio.FindAsync(id);
+            var consultorio = await _context.Consultorio
+                .Include(c => c.Endereco) // Include the associated Endereco
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (consultorio == null)
             {
                 return NotFound();
             }
-            ViewData["EnderecoId"] = new SelectList(_context.Endereco, "Id", "Cep", consultorio.EnderecoId);
+            // Get the list of available Enderecos (those not associated with any Consultorio)
+            var availableEnderecos = _context.Endereco
+                .Where(e => !_context.Consultorio.Any(c => c.EnderecoId == e.Id))
+                .Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Id.ToString() })
+                .ToList();
+
+            // Pass the list to the view
+            ViewData["AvailableEnderecos"] = availableEnderecos;
             return View(consultorio);
         }
 
@@ -126,7 +132,7 @@ namespace DermaHelp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EnderecoId"] = new SelectList(_context.Endereco, "Id", "Cep", consultorio.EnderecoId);
+            ViewData["EnderecoId"] = new SelectList(_context.Endereco, "Id", "Id", consultorio.EnderecoId);
             return View(consultorio);
         }
 
