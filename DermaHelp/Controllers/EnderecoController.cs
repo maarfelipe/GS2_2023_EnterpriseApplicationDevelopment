@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DermaHelp.Entities;
+using DermaHelp.Persistense;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DermaHelp.Entities;
-using DermaHelp.Persistense;
 
 namespace DermaHelp.Controllers
 {
@@ -48,7 +44,7 @@ namespace DermaHelp.Controllers
         // GET: Endereco/Create
         public IActionResult Create()
         {
-            ViewData["ConsultorioId"] = new SelectList(_context.Consultorio, "Id", "Cnpj");
+            ViewData["ConsultorioId"] = new SelectList(_context.Consultorio, "Id", "Id");
             return View();
         }
 
@@ -65,7 +61,7 @@ namespace DermaHelp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ConsultorioId"] = new SelectList(_context.Consultorio, "Id", "Cnpj", endereco.ConsultorioId);
+            ViewData["ConsultorioId"] = new SelectList(_context.Consultorio, "Id", "Id", endereco.ConsultorioId);
             return View(endereco);
         }
 
@@ -82,7 +78,7 @@ namespace DermaHelp.Controllers
             {
                 return NotFound();
             }
-            ViewData["ConsultorioId"] = new SelectList(_context.Consultorio, "Id", "Cnpj", endereco.ConsultorioId);
+            ViewData["ConsultorioId"] = new SelectList(_context.Consultorio, "Id", "Id", endereco.ConsultorioId);
             return View(endereco);
         }
 
@@ -118,7 +114,7 @@ namespace DermaHelp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ConsultorioId"] = new SelectList(_context.Consultorio, "Id", "Cnpj", endereco.ConsultorioId);
+            ViewData["ConsultorioId"] = new SelectList(_context.Consultorio, "Id", "Id", endereco.ConsultorioId);
             return View(endereco);
         }
 
