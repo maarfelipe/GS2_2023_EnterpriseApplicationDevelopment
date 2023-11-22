@@ -20,10 +20,7 @@ namespace DermaHelp.Entities
         [Required(ErrorMessage = "CNPJ é obrigatório.")]
         public required string Cnpj { get; set; }
 
-        //public virtual ICollection<Consulta> Consultas { get; set; } = new List<Consulta>();
-
-        // One-to-Many relationship with Medico
-        //public virtual ICollection<Medico> Medicos { get; set; } = new List<Medico>();
+        public virtual ICollection<Consulta> Consultas { get; set; } = new List<Consulta>();
 
         // One-to-One relationship with Endereco
         [ForeignKey("Endereco")]
@@ -32,7 +29,7 @@ namespace DermaHelp.Entities
         public long? EnderecoId { get; set; }
         public virtual Endereco? Endereco { get; set; }
 
-        // Many-to-Many relationship with Medico
-        //public virtual ICollection<MedicoConsultorio> MedicoConsultorio { get; set; } = new List<MedicoConsultorio>();
+        // One-to-Many relationship with Medico
+        public virtual ICollection<Medico> Medico { get; set; } = new List<Medico>();
     }
 }

@@ -22,6 +22,43 @@ namespace DermaHelp.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("DermaHelp.Entities.Consulta", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("ConsultorioId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("id_consultorio");
+
+                    b.Property<DateTime>("DataHora")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("data_consulta");
+
+                    b.Property<long>("MedicoId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("id_medico");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("integer")
+                        .HasColumnName("id_usuario");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsultorioId");
+
+                    b.HasIndex("MedicoId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Consultas");
+                });
+
             modelBuilder.Entity("DermaHelp.Entities.Consultorio", b =>
                 {
                     b.Property<long>("Id")
@@ -105,6 +142,45 @@ namespace DermaHelp.Migrations
                     b.ToTable("Enderecos");
                 });
 
+            modelBuilder.Entity("DermaHelp.Entities.Medico", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long?>("ConsultorioId")
+                        .IsRequired()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id_consultorio");
+
+                    b.Property<string>("Crm")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("character varying(13)")
+                        .HasColumnName("crm_medico");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
+                        .HasColumnName("email_medico");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("nome_medico");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsultorioId");
+
+                    b.ToTable("Medicos");
+                });
+
             modelBuilder.Entity("DermaHelp.Entities.Usuario", b =>
                 {
                     b.Property<int>("Id")
@@ -143,6 +219,33 @@ namespace DermaHelp.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("DermaHelp.Entities.Consulta", b =>
+                {
+                    b.HasOne("DermaHelp.Entities.Consultorio", "Consultorio")
+                        .WithMany("Consultas")
+                        .HasForeignKey("ConsultorioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DermaHelp.Entities.Medico", "Medico")
+                        .WithMany("Consultas")
+                        .HasForeignKey("MedicoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DermaHelp.Entities.Usuario", "Usuario")
+                        .WithMany("Consultas")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Consultorio");
+
+                    b.Navigation("Medico");
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("DermaHelp.Entities.Consultorio", b =>
                 {
                     b.HasOne("DermaHelp.Entities.Endereco", "Endereco")
@@ -154,9 +257,37 @@ namespace DermaHelp.Migrations
                     b.Navigation("Endereco");
                 });
 
+            modelBuilder.Entity("DermaHelp.Entities.Medico", b =>
+                {
+                    b.HasOne("DermaHelp.Entities.Consultorio", "Consultorio")
+                        .WithMany("Medico")
+                        .HasForeignKey("ConsultorioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Consultorio");
+                });
+
+            modelBuilder.Entity("DermaHelp.Entities.Consultorio", b =>
+                {
+                    b.Navigation("Consultas");
+
+                    b.Navigation("Medico");
+                });
+
             modelBuilder.Entity("DermaHelp.Entities.Endereco", b =>
                 {
                     b.Navigation("Consultorio");
+                });
+
+            modelBuilder.Entity("DermaHelp.Entities.Medico", b =>
+                {
+                    b.Navigation("Consultas");
+                });
+
+            modelBuilder.Entity("DermaHelp.Entities.Usuario", b =>
+                {
+                    b.Navigation("Consultas");
                 });
 #pragma warning restore 612, 618
         }

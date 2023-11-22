@@ -21,7 +21,7 @@
 
 //        [Column("resultado_imagem")]
 //        [MaxLength(500)]
-//        public required string Resultado { get; set; }
+//        public string? Resultado { get; set; }
 
 //        [ForeignKey("Usuario")]
 //        [Column("id_usuario")]
