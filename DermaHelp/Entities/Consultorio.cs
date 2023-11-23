@@ -28,8 +28,5 @@ namespace DermaHelp.Entities
         [Required(ErrorMessage = "Endereço é obrigatório.")]
         public long? EnderecoId { get; set; }
         public virtual Endereco? Endereco { get; set; }
-
-        // One-to-Many relationship with Medico
-        public virtual ICollection<Medico> Medico { get; set; } = new List<Medico>();
     }
 }
