@@ -29,11 +29,5 @@ namespace DermaHelp.Entities
 
         // One-to-Many relationship with Consulta
         public virtual ICollection<Consulta> Consultas { get; set; } = new List<Consulta>();
-
-        // Many-to-One relationship with Consultorio
-        [ForeignKey("Consultorio")]
-        [Column("id_consultorio")]
-        public long? ConsultorioId { get; set; }
-        public virtual Consultorio? Consultorio { get; set; }
     }
 }

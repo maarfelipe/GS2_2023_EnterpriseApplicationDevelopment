@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DermaHelp.Entities;
+﻿using DermaHelp.Entities;
 using DermaHelp.Persistense;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DermaHelp.Controllers
 {
@@ -22,8 +17,9 @@ namespace DermaHelp.Controllers
         // GET: Medico
         public async Task<IActionResult> Index()
         {
-            var postgreDbContext = _context.Medico.Include(m => m.Consultorio);
-            return View(await postgreDbContext.ToListAsync());
+              return _context.Medico != null ? 
+                          View(await _context.Medico.ToListAsync()) :
+                          Problem("Entity set 'PostgreDbContext.Medico'  is null.");
         }
 
         // GET: Medico/Details/5
@@ -35,7 +31,6 @@ namespace DermaHelp.Controllers
             }
 
             var medico = await _context.Medico
-                .Include(m => m.Consultorio)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (medico == null)
             {
@@ -48,7 +43,6 @@ namespace DermaHelp.Controllers
         // GET: Medico/Create
         public IActionResult Create()
         {
-            ViewData["ConsultorioId"] = new SelectList(_context.Consultorio, "Id", "Cnpj");
             return View();
         }
 
@@ -57,15 +51,16 @@ namespace DermaHelp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Crm,Email,ConsultorioId")] Medico medico)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Crm,Email")] Medico medico)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(medico);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = $"Médico {medico.Id} cadastrado com sucesso.";
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ConsultorioId"] = new SelectList(_context.Consultorio, "Id", "Cnpj", medico.ConsultorioId);
             return View(medico);
         }
 
@@ -82,7 +77,6 @@ namespace DermaHelp.Controllers
             {
                 return NotFound();
             }
-            ViewData["ConsultorioId"] = new SelectList(_context.Consultorio, "Id", "Cnpj", medico.ConsultorioId);
             return View(medico);
         }
 
@@ -91,7 +85,7 @@ namespace DermaHelp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,Nome,Crm,Email,ConsultorioId")] Medico medico)
+        public async Task<IActionResult> Edit(long id, [Bind("Id,Nome,Crm,Email")] Medico medico)
         {
             if (id != medico.Id)
             {
@@ -103,6 +97,8 @@ namespace DermaHelp.Controllers
                 try
                 {
                     _context.Update(medico);
+                    TempData["SuccessMessage"] = $"Médico {medico.Id} alterado com sucesso.";
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -118,7 +114,6 @@ namespace DermaHelp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ConsultorioId"] = new SelectList(_context.Consultorio, "Id", "Cnpj", medico.ConsultorioId);
             return View(medico);
         }
 
@@ -131,7 +126,6 @@ namespace DermaHelp.Controllers
             }
 
             var medico = await _context.Medico
-                .Include(m => m.Consultorio)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (medico == null)
             {
@@ -157,6 +151,8 @@ namespace DermaHelp.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = $"Cadastro excluído com sucesso.";
+
             return RedirectToAction(nameof(Index));
         }
 
