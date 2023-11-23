@@ -57,6 +57,9 @@ namespace DermaHelp.Controllers
             {
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = $"Paciente {usuario.Id} cadastrado com sucesso.";
+
                 return RedirectToAction(nameof(Index));
             }
             return View(usuario);
@@ -96,6 +99,8 @@ namespace DermaHelp.Controllers
                 {
                     _context.Update(usuario);
                     await _context.SaveChangesAsync();
+
+                    TempData["SuccessMessage"] = $"Paciente {usuario.Id} atualizado com sucesso.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -147,6 +152,8 @@ namespace DermaHelp.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = $"Cadastro excluído com sucesso.";
+
             return RedirectToAction(nameof(Index));
         }
 
