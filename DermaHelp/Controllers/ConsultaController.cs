@@ -59,16 +59,20 @@ namespace DermaHelp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,DataHora,UsuarioId,MedicoId,ConsultorioId")] Consulta consulta)
         {
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
             {
+                consulta.DataHora = DateTime.UtcNow;
                 _context.Add(consulta);
                 await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Consulta registrada com sucesso.";
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ConsultorioId"] = new SelectList(_context.Consultorio, "Id", "Id", consulta.ConsultorioId);
-            ViewData["MedicoId"] = new SelectList(_context.Medico, "Id", "Id", consulta.MedicoId);
-            ViewData["UsuarioId"] = new SelectList(_context.Usuario, "Id", "Id", consulta.UsuarioId);
-            return View(consulta);
+
+            //ViewData["ConsultorioId"] = new SelectList(_context.Consultorio, "Id", "Id", consulta.ConsultorioId);
+            //ViewData["MedicoId"] = new SelectList(_context.Medico, "Id", "Id", consulta.MedicoId);
+            //ViewData["UsuarioId"] = new SelectList(_context.Usuario, "Id", "Id", consulta.UsuarioId);
+            //return View(consulta);
         }
 
         // GET: Consulta/Edit/5
@@ -102,11 +106,13 @@ namespace DermaHelp.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
             {
                 try
                 {
                     _context.Update(consulta);
+
+                    TempData["SuccessMessage"] = "Dados da consulta alterados com sucesso.";
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -122,10 +128,10 @@ namespace DermaHelp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ConsultorioId"] = new SelectList(_context.Consultorio, "Id", "Id", consulta.ConsultorioId);
-            ViewData["MedicoId"] = new SelectList(_context.Medico, "Id", "Id", consulta.MedicoId);
-            ViewData["UsuarioId"] = new SelectList(_context.Usuario, "Id", "Id", consulta.UsuarioId);
-            return View(consulta);
+            //ViewData["ConsultorioId"] = new SelectList(_context.Consultorio, "Id", "Id", consulta.ConsultorioId);
+            //ViewData["MedicoId"] = new SelectList(_context.Medico, "Id", "Id", consulta.MedicoId);
+            //ViewData["UsuarioId"] = new SelectList(_context.Usuario, "Id", "Id", consulta.UsuarioId);
+            //return View(consulta);
         }
 
         // GET: Consulta/Delete/5
@@ -165,6 +171,8 @@ namespace DermaHelp.Controllers
             }
             
             await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Consulta excluída com sucesso.";
             return RedirectToAction(nameof(Index));
         }
 

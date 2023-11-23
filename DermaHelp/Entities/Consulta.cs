@@ -12,7 +12,6 @@ namespace DermaHelp.Entities
         public long Id { get; set; }
 
         [Column("data_consulta")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DataHora { get; set; }
 
         [ForeignKey("Usuario")]
