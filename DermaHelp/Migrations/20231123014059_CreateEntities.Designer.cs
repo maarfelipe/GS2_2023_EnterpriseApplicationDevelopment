@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DermaHelp.Migrations
 {
     [DbContext(typeof(PostgreDbContext))]
-    [Migration("20231122015948_CreateEntities")]
+    [Migration("20231123014059_CreateEntities")]
     partial class CreateEntities
     {
         /// <inheritdoc />
@@ -39,7 +39,6 @@ namespace DermaHelp.Migrations
                         .HasColumnName("id_consultorio");
 
                     b.Property<DateTime>("DataHora")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("data_consulta");
 
@@ -89,8 +88,7 @@ namespace DermaHelp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EnderecoId")
-                        .IsUnique();
+                    b.HasIndex("EnderecoId");
 
                     b.ToTable("Consultorios");
                 });
@@ -142,7 +140,44 @@ namespace DermaHelp.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ConsultorioId");
+
                     b.ToTable("Enderecos");
+                });
+
+            modelBuilder.Entity("DermaHelp.Entities.Imagem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("DataHora")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("data_hora");
+
+                    b.Property<string>("ImageData")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("image_data");
+
+                    b.Property<string>("Resultado")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("resultado_imagem");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("integer")
+                        .HasColumnName("id_usuario");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Imagens");
                 });
 
             modelBuilder.Entity("DermaHelp.Entities.Medico", b =>
@@ -153,11 +188,6 @@ namespace DermaHelp.Migrations
                         .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long?>("ConsultorioId")
-                        .IsRequired()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id_consultorio");
 
                     b.Property<string>("Crm")
                         .IsRequired()
@@ -178,8 +208,6 @@ namespace DermaHelp.Migrations
                         .HasColumnName("nome_medico");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ConsultorioId");
 
                     b.ToTable("Medicos");
                 });
@@ -227,13 +255,13 @@ namespace DermaHelp.Migrations
                     b.HasOne("DermaHelp.Entities.Consultorio", "Consultorio")
                         .WithMany("Consultas")
                         .HasForeignKey("ConsultorioId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DermaHelp.Entities.Medico", "Medico")
                         .WithMany("Consultas")
                         .HasForeignKey("MedicoId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DermaHelp.Entities.Usuario", "Usuario")
@@ -252,35 +280,37 @@ namespace DermaHelp.Migrations
             modelBuilder.Entity("DermaHelp.Entities.Consultorio", b =>
                 {
                     b.HasOne("DermaHelp.Entities.Endereco", "Endereco")
-                        .WithOne("Consultorio")
-                        .HasForeignKey("DermaHelp.Entities.Consultorio", "EnderecoId")
+                        .WithMany()
+                        .HasForeignKey("EnderecoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Endereco");
                 });
 
-            modelBuilder.Entity("DermaHelp.Entities.Medico", b =>
+            modelBuilder.Entity("DermaHelp.Entities.Endereco", b =>
                 {
                     b.HasOne("DermaHelp.Entities.Consultorio", "Consultorio")
-                        .WithMany("Medico")
-                        .HasForeignKey("ConsultorioId")
+                        .WithMany()
+                        .HasForeignKey("ConsultorioId");
+
+                    b.Navigation("Consultorio");
+                });
+
+            modelBuilder.Entity("DermaHelp.Entities.Imagem", b =>
+                {
+                    b.HasOne("DermaHelp.Entities.Usuario", "Usuario")
+                        .WithMany("Imagens")
+                        .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Consultorio");
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("DermaHelp.Entities.Consultorio", b =>
                 {
                     b.Navigation("Consultas");
-
-                    b.Navigation("Medico");
-                });
-
-            modelBuilder.Entity("DermaHelp.Entities.Endereco", b =>
-                {
-                    b.Navigation("Consultorio");
                 });
 
             modelBuilder.Entity("DermaHelp.Entities.Medico", b =>
@@ -291,6 +321,8 @@ namespace DermaHelp.Migrations
             modelBuilder.Entity("DermaHelp.Entities.Usuario", b =>
                 {
                     b.Navigation("Consultas");
+
+                    b.Navigation("Imagens");
                 });
 #pragma warning restore 612, 618
         }
