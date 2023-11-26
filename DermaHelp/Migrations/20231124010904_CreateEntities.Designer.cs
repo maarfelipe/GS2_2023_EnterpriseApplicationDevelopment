@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DermaHelp.Migrations
 {
     [DbContext(typeof(PostgreDbContext))]
-    [Migration("20231123014059_CreateEntities")]
+    [Migration("20231124010904_CreateEntities")]
     partial class CreateEntities
     {
         /// <inheritdoc />
@@ -88,7 +88,8 @@ namespace DermaHelp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EnderecoId");
+                    b.HasIndex("EnderecoId")
+                        .IsUnique();
 
                     b.ToTable("Consultorios");
                 });
@@ -139,8 +140,6 @@ namespace DermaHelp.Migrations
                         .HasColumnName("numero");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ConsultorioId");
 
                     b.ToTable("Enderecos");
                 });
@@ -280,21 +279,12 @@ namespace DermaHelp.Migrations
             modelBuilder.Entity("DermaHelp.Entities.Consultorio", b =>
                 {
                     b.HasOne("DermaHelp.Entities.Endereco", "Endereco")
-                        .WithMany()
-                        .HasForeignKey("EnderecoId")
+                        .WithOne("Consultorio")
+                        .HasForeignKey("DermaHelp.Entities.Consultorio", "EnderecoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Endereco");
-                });
-
-            modelBuilder.Entity("DermaHelp.Entities.Endereco", b =>
-                {
-                    b.HasOne("DermaHelp.Entities.Consultorio", "Consultorio")
-                        .WithMany()
-                        .HasForeignKey("ConsultorioId");
-
-                    b.Navigation("Consultorio");
                 });
 
             modelBuilder.Entity("DermaHelp.Entities.Imagem", b =>
@@ -311,6 +301,11 @@ namespace DermaHelp.Migrations
             modelBuilder.Entity("DermaHelp.Entities.Consultorio", b =>
                 {
                     b.Navigation("Consultas");
+                });
+
+            modelBuilder.Entity("DermaHelp.Entities.Endereco", b =>
+                {
+                    b.Navigation("Consultorio");
                 });
 
             modelBuilder.Entity("DermaHelp.Entities.Medico", b =>

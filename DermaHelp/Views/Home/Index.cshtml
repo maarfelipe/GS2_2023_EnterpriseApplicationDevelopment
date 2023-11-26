@@ -2,7 +2,59 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    body {
+        background-color: #f4f4f4;
+        color: #333;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .welcome-container {
+        text-align: center;
+    }
+
+    .welcome-message {
+        font-size: 2em;
+        margin-bottom: 20px;
+        color: #007bff;
+    }
+
+    .learn-link {
+        color: #007bff;
+    }
+
+    .video-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .video-frame {
+        width: 48%;
+        box-sizing: border-box;
+    }
+</style>
+
+<div class="welcome-container">
+    <h1 class="welcome-message">Welcome to DermaHelp!</h1>
+    <p>
+       Uma solução projetada para ser integrada ao aplicativo da Hapvida!
+    </p>
+    <p>
+        Tire uma foto de uma mancha na pele, receba uma avaliação preliminar em segundos.
+        Com machine learning avançado, agilizamos o acesso ao diagnóstico, reduzindo o tempo até a consulta com um dermatologista.
+        Uma solução que une tecnologia à saúde, transformando como enfrentamos o câncer de pele
+    </p>
+
+    <!-- YouTube Video Embed -->
+    <div class="video-container">
+        <div class="video-frame">
+            <iframe width="100%" height="315" src="https://www.youtube.com/embed/qaqfDcLm04o" title="DermaHelp_gs2_MachineLearning_2023_FIAP" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+        <div class="video-frame">
+            <iframe width="100%" height="315" src="https://www.youtube.com/embed/C4Ae16ilYWw" title="DermaHelp_gs2_pitch_2023_FIAP" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+    </div>
 </div>

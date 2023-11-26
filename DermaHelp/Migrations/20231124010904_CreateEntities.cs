@@ -13,6 +13,25 @@ namespace DermaHelp.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Enderecos",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    logradouro = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    numero = table.Column<int>(type: "integer", nullable: false),
+                    complemento = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
+                    cidade = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
+                    estado = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
+                    cep = table.Column<string>(type: "text", nullable: false),
+                    id_consultorio = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Enderecos", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Medicos",
                 columns: table => new
                 {
@@ -41,6 +60,27 @@ namespace DermaHelp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Consultorios",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    nome_consultorio = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    cnpj_consultorio = table.Column<string>(type: "text", nullable: false),
+                    id_endereco = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Consultorios", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Consultorios_Enderecos_id_endereco",
+                        column: x => x.id_endereco,
+                        principalTable: "Enderecos",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,6 +120,12 @@ namespace DermaHelp.Migrations
                 {
                     table.PrimaryKey("PK_Consultas", x => x.id);
                     table.ForeignKey(
+                        name: "FK_Consultas_Consultorios_id_consultorio",
+                        column: x => x.id_consultorio,
+                        principalTable: "Consultorios",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Consultas_Medicos_id_medico",
                         column: x => x.id_medico,
                         principalTable: "Medicos",
@@ -91,45 +137,6 @@ namespace DermaHelp.Migrations
                         principalTable: "Usuarios",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Consultorios",
-                columns: table => new
-                {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    nome_consultorio = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    cnpj_consultorio = table.Column<string>(type: "text", nullable: false),
-                    id_endereco = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Consultorios", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Enderecos",
-                columns: table => new
-                {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    logradouro = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    numero = table.Column<int>(type: "integer", nullable: false),
-                    complemento = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
-                    cidade = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
-                    estado = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
-                    cep = table.Column<string>(type: "text", nullable: false),
-                    id_consultorio = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Enderecos", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_Enderecos_Consultorios_id_consultorio",
-                        column: x => x.id_consultorio,
-                        principalTable: "Consultorios",
-                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -150,42 +157,18 @@ namespace DermaHelp.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Consultorios_id_endereco",
                 table: "Consultorios",
-                column: "id_endereco");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Enderecos_id_consultorio",
-                table: "Enderecos",
-                column: "id_consultorio");
+                column: "id_endereco",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Imagens_id_usuario",
                 table: "Imagens",
                 column: "id_usuario");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Consultas_Consultorios_id_consultorio",
-                table: "Consultas",
-                column: "id_consultorio",
-                principalTable: "Consultorios",
-                principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Consultorios_Enderecos_id_endereco",
-                table: "Consultorios",
-                column: "id_endereco",
-                principalTable: "Enderecos",
-                principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Enderecos_Consultorios_id_consultorio",
-                table: "Enderecos");
-
             migrationBuilder.DropTable(
                 name: "Consultas");
 
@@ -193,13 +176,13 @@ namespace DermaHelp.Migrations
                 name: "Imagens");
 
             migrationBuilder.DropTable(
+                name: "Consultorios");
+
+            migrationBuilder.DropTable(
                 name: "Medicos");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
-
-            migrationBuilder.DropTable(
-                name: "Consultorios");
 
             migrationBuilder.DropTable(
                 name: "Enderecos");

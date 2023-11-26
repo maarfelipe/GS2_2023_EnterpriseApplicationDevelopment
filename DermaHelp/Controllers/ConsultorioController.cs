@@ -63,7 +63,7 @@ namespace DermaHelp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nome,Cnpj,EnderecoId")] Consultorio consultorio)
         {
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
             {
                 _context.Add(consultorio);
                 await _context.SaveChangesAsync();
@@ -114,7 +114,7 @@ namespace DermaHelp.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
             {
                 try
                 {
